@@ -23,10 +23,10 @@ public class AllRequestsServlet extends HttpServlet {
                       HttpServletResponse response) throws ServletException, IOException {
 
         Map<String, Object> pageVariables = createPageVariablesMap(request);
-        pageVariables.put("message", "");
+        pageVariables.put("key", request.getParameter("key"));
 
-        response.getWriter().println(PageGenerator.instance().getPage("page.html", pageVariables));
-
+        //response.getWriter().println(PageGenerator.instance().getPage("mirror.html", pageVariables));
+        response.getWriter().print(pageVariables.get("key"));
         response.setContentType("text/html;charset=utf-8");
         response.setStatus(HttpServletResponse.SC_OK);
 
@@ -36,18 +36,18 @@ public class AllRequestsServlet extends HttpServlet {
                        HttpServletResponse response) throws ServletException, IOException {
         Map<String, Object> pageVariables = createPageVariablesMap(request);
 
-        String message = request.getParameter("message");
+        String key = request.getParameter("key");
 
         response.setContentType("text/html;charset=utf-8");
 
-        if (message == null || message.isEmpty()) {
+        if (key == null || key.isEmpty()) {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         } else {
             response.setStatus(HttpServletResponse.SC_OK);
         }
-        pageVariables.put("message", message == null ? "" : message);
+        pageVariables.put("key", key == null ? "" : key);
 
-        response.getWriter().println(PageGenerator.instance().getPage("page.html", pageVariables));
+        response.getWriter().println(PageGenerator.instance().getPage("mirror.html", pageVariables));
     }
 
     private static Map<String, Object> createPageVariablesMap(HttpServletRequest request) {

@@ -1,9 +1,14 @@
 package main;
 
+import log.NoLogging;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.util.log.Log;
 import servlets.AllRequestsServlet;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author v.chibrikov
@@ -14,6 +19,8 @@ import servlets.AllRequestsServlet;
  */
 public class Main {
     public static void main(String[] args) throws Exception {
+        org.eclipse.jetty.util.log.Log.setLog(new NoLogging());
+        Logger log = Logger.getAnonymousLogger();
         AllRequestsServlet allRequestsServlet = new AllRequestsServlet();
 
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
@@ -23,6 +30,7 @@ public class Main {
         server.setHandler(context);
 
         server.start();
+        System.out.println("Server started");
         server.join();
     }
 }
