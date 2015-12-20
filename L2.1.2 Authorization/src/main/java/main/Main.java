@@ -2,6 +2,7 @@ package main;
 
 import accounts.AccountService;
 import accounts.UserProfile;
+import org.apache.logging.log4j.LogManager;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.HandlerList;
@@ -11,7 +12,8 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import servlets.SignInServlet;
 import servlets.SignUpServlet;
 
-import java.util.logging.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * @author v.chibrikov
@@ -21,6 +23,7 @@ import java.util.logging.Logger;
  *         Описание курса и лицензия: https://github.com/vitaly-chibrikov/stepic_java_webserver
  */
 public class Main {
+    static Logger log = LogManager.getLogger(Main.class.getName());
     public static void main(String[] args) throws Exception {
         AccountService accountService = new AccountService();
 
@@ -38,7 +41,8 @@ public class Main {
         server.setHandler(handlers);
 
         server.start();
-        Logger.getGlobal().info("Server started");
+        System.out.println("Server started");
+        log.info("Server started");
         server.join();
     }
 }

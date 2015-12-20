@@ -9,6 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 /**
  * @author v.chibrikov
  *         <p>
@@ -17,6 +20,8 @@ import java.io.IOException;
  *         Описание курса и лицензия: https://github.com/vitaly-chibrikov/stepic_java_webserver
  */
 public class SignUpServlet extends HttpServlet {
+    static Logger log = LogManager.getLogger(SignUpServlet.class.getName());
+
     @SuppressWarnings({"FieldCanBeLocal", "UnusedDeclaration"}) //todo: remove after module 2 home work
     private final AccountService accountService;
 
@@ -28,6 +33,7 @@ public class SignUpServlet extends HttpServlet {
     public void doGet(HttpServletRequest request,
                       HttpServletResponse response) throws ServletException, IOException {
         //todo: module 2 home work
+        log.info("signup doGet with login:" + request.getParameter("login")  + " password:" + request.getParameter("password"));
     }
 
     //sign up
@@ -36,11 +42,12 @@ public class SignUpServlet extends HttpServlet {
         //todo: module 2 home work
         String login = request.getParameter("login");
         String pass = request.getParameter("password");
-
+        log.info("signup post with login:" + login + " password:" + pass);
         if (login == null || pass == null) {
             response.setContentType("text/html;charset=utf-8");
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             response.getWriter().print("Empty login or password");
+            log.info("send response: Empty login or password");
             return;
         }
 
@@ -49,6 +56,7 @@ public class SignUpServlet extends HttpServlet {
             response.setContentType("text/html;charset=utf-8");
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             response.getWriter().print("User already registered");
+            log.info("send response: User already registered");
             return;
         }
 
@@ -57,17 +65,20 @@ public class SignUpServlet extends HttpServlet {
         accountService.addNewUser(newProfile);
         response.setStatus(HttpServletResponse.SC_OK);
         response.getWriter().print("User created");
+        log.info("send response: User created");
     }
 
     //change profile
     public void doPut(HttpServletRequest request,
                       HttpServletResponse response) throws ServletException, IOException {
         //todo: module 2 home work
+        log.info("signup doPut with login:" + request.getParameter("login")  + " password:" + request.getParameter("password"));
     }
 
     //unregister
     public void doDelete(HttpServletRequest request,
                          HttpServletResponse response) throws ServletException, IOException {
         //todo: module 2 home work
+        log.info("signup doDelete with login:" + request.getParameter("login")  + " password:" + request.getParameter("password"));
     }
 }

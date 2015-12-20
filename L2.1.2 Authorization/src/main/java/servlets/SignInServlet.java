@@ -10,6 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 /**
  * @author v.chibrikov
  *         <p>
@@ -18,6 +21,7 @@ import java.io.IOException;
  *         Описание курса и лицензия: https://github.com/vitaly-chibrikov/stepic_java_webserver
  */
 public class SignInServlet extends HttpServlet {
+    static Logger log = LogManager.getLogger(SignInServlet.class.getName());
     private final AccountService accountService;
 
     public SignInServlet(AccountService accountService) {
@@ -29,6 +33,7 @@ public class SignInServlet extends HttpServlet {
                       HttpServletResponse response) throws ServletException, IOException {
         String sessionId = request.getSession().getId();
         UserProfile profile = accountService.getUserBySessionId(sessionId);
+        log.info("signin doGet with login:" + request.getParameter("login")  + " password:" + request.getParameter("password"));
         if (profile == null) {
             response.setContentType("text/html;charset=utf-8");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -46,6 +51,7 @@ public class SignInServlet extends HttpServlet {
                        HttpServletResponse response) throws ServletException, IOException {
         String login = request.getParameter("login");
         String pass = request.getParameter("password");
+        log.info("signin post with login:" + login + " password:" + pass);
 
         if (login == null || pass == null) {
             response.setContentType("text/html;charset=utf-8");
@@ -58,6 +64,7 @@ public class SignInServlet extends HttpServlet {
             response.setContentType("text/html;charset=utf-8");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().print("Unauthorized");
+            log.info("send response: Unauthorized");
             return;
         }
 
@@ -68,6 +75,7 @@ public class SignInServlet extends HttpServlet {
         //response.getWriter().println(json);
         response.getWriter().print("Authorized");
         response.setStatus(HttpServletResponse.SC_OK);
+        log.info("send response: Authorized");
     }
 
     //sign out
@@ -75,6 +83,7 @@ public class SignInServlet extends HttpServlet {
                          HttpServletResponse response) throws ServletException, IOException {
         String sessionId = request.getSession().getId();
         UserProfile profile = accountService.getUserBySessionId(sessionId);
+        log.info("signup doDelete with login:" + request.getParameter("login")  + " password:" + request.getParameter("password"));
         if (profile == null) {
             response.setContentType("text/html;charset=utf-8");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
